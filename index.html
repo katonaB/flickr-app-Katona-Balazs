@@ -1,0 +1,63 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>flickr app v1 | Katona Balázs</title>
+    <meta charset="utf-8" />
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon"/>
+
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+
+    <link href="css/style.css" rel="stylesheet">
+
+    <script  src="bootstrap/js/bootstrap.min.js"></script>
+    <script  src="js/angular-masonry.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script>
+
+        var apiKey, dbPerOldal, apiUrl, apiUrlSize, kepMeret;
+        apiKey = "57f694132e4714c29a64c9af890b124e";
+        dbPerOldal = "10";
+        apiUrl = "https://api.flickr.com/services/rest/?method=flickr.photos.getRecent&api_key="+apiKey+"&per_page="+dbPerOldal+"&format=json&nojsoncallback=1";
+        kepMeret = 320;
+
+        $(document).ready(function() {
+            $('#listaz').click(function(){
+
+                $.get(apiUrl, function(json){
+                    $.each(json.photos.photo,function(i,egyKep){
+                        apiUrlSize = "https://api.flickr.com/services/rest/?method=flickr.photos.getSizes&api_key="+apiKey+"&photo_id="+egyKep.id+"&format=json&nojsoncallback=1";
+
+                        $.get(apiUrlSize,function(meret){
+                            $.each(meret.sizes.size,function(i,egyKepMeret){
+                                if (egyKepMeret.width==kepMeret) {
+                                    $("#ide").append('<a href="'+egyKepMeret.url+'" target="_blank"><img src="'+egyKepMeret.source+'"/></a>');
+
+                                }
+                            })
+                        })
+                    })
+                })
+
+            });
+        });
+
+    </script>
+
+</head>
+<body>
+    <div class="container">
+
+        <button id="listaz">Kérem a legfrissebb képeket!</button>
+        <button onclick="document.getElementById('ide').innerHTML=''">Reset</button>
+
+        <div class="row">
+            <p id="ide"></p>
+        </div>
+
+    </div>
+    
+</body>
+</html>
