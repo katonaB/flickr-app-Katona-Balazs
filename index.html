@@ -1,8 +1,9 @@
-
+﻿
 <!DOCTYPE html>
 <html>
 <head>
-    <title>flickr app v1 | Katona Balázs</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
+    <title>flickr app | Katona Balázs</title>
     <meta charset="utf-8" />
     <link rel="icon" href="img/favicon.ico" type="image/x-icon"/>
 
@@ -11,20 +12,27 @@
 
     <link href="css/style.css" rel="stylesheet">
 
-    <script  src="bootstrap/js/bootstrap.min.js"></script>
-    <script  src="js/angular-masonry.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="bootstrap/js/npm.js"></script>
+    <script src="js/angular-masonry.js"></script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script>
 
         var apiKey, dbPerOldal, apiUrl, apiUrlSize, kepMeret;
         apiKey = "57f694132e4714c29a64c9af890b124e";
-        dbPerOldal = "10";
-        apiUrl = "https://api.flickr.com/services/rest/?method=flickr.photos.getRecent&api_key="+apiKey+"&per_page="+dbPerOldal+"&format=json&nojsoncallback=1";
+        dbPerOldal = "30";
+        //apiUrl = "https://api.flickr.com/services/rest/?method=flickr.photos.getRecent&api_key="+apiKey+"&per_page="+dbPerOldal+"&format=json&nojsoncallback=1";
+
+        var text = "red";
+
         kepMeret = 320;
 
         $(document).ready(function() {
             $('#listaz').click(function(){
+                $('#ide').empty();
+                text = document.getElementById('keresoMezo').value;
+                apiUrl = "https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key="+apiKey+"&per_page="+dbPerOldal+"&format=json&nojsoncallback=1&text="+text;
 
                 $.get(apiUrl, function(json){
                     $.each(json.photos.photo,function(i,egyKep){
@@ -32,32 +40,74 @@
 
                         $.get(apiUrlSize,function(meret){
                             $.each(meret.sizes.size,function(i,egyKepMeret){
-                                if (egyKepMeret.width==kepMeret) {
-                                    $("#ide").append('<a href="'+egyKepMeret.url+'" target="_blank"><img src="'+egyKepMeret.source+'"/></a>');
 
-                                }
-                            })
+                                if (egyKepMeret.width==kepMeret) {
+                                    $("#ide").append('<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 item"> <div class="thumbnail"> <a href="'+egyKepMeret.url+'" target="_blank"><img src="'+egyKepMeret.source+'"/></a> <div class="caption"> <h4>'+egyKep.title+'</h4> <p> <a href="https://www.flickr.com/photos/'+egyKep.owner+'" target="_blank">A szerző további képei</a> </p> </div> </div> </div>');
+                            }
                         })
+
+                        var $container = $('.masonry-container');
+                        $container.imagesLoaded( function () {
+                            $container.masonry({
+                                columnWidth: '.item',
+                                itemSelector: '.item'
+                            });
+                        });
                     })
                 })
+            })
+        })
+    });
 
+    function asd() {
+        var $container = $('.masonry-container');
+        $container.imagesLoaded( function () {
+            $container.masonry({
+                columnWidth: '.item',
+                itemSelector: '.item'
             });
         });
+    }
 
     </script>
 
 </head>
 <body>
-    <div class="container">
-
-        <button id="listaz">Kérem a legfrissebb képeket!</button>
-        <button onclick="document.getElementById('ide').innerHTML=''">Reset</button>
-
-        <div class="row">
-            <p id="ide"></p>
+    <nav class="row flex2">
+        <div class="col-lg-2">
+            <img src="img/flickr_logo.png" class="center">
         </div>
 
+        <div class="col-lg-7 center elem2">
+
+            <div class="input-group-btn">
+                <input type="text" placeholder="Keresés..." id="keresoMezo" class="form-control input-sm-6 col-lg-4"/>
+                <button id="listaz" class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+            </div>
+
+         </div>
+        <div class="col-lg-3">
+            <img src="img/jofogas_logo.png" class="pull-right">
+        </div>
+    </nav>
+
+    <div class="container">
+            <div id="ide" class="row masonry-container">
+
+
+            </div>
     </div>
-    
+
+    <footer>
+        <div class="flex">
+            <div class="elem">
+                <span>2017 &copy; Katona Balázs</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/masonry.pkgd.min.js"></script>
+    <script src="js/imagesloaded.pkgd.min.js"></script>
+
 </body>
 </html>

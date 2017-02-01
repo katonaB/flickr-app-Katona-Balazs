@@ -1,5 +1,58 @@
-$hatterSzin: #444;
+$szurkesKek: #6A808A;
+$vilagosSzurkesKek: #baced7;
+$vilagosBarna: #D7CABA;
+$feher: #fff;
 
 body{
-    background-color: $hatterSzin;
+    background-color: $vilagosSzurkesKek;
+    padding: 0;
+    margin: 0;
+}
+
+nav{
+    background-color: $szurkesKek;
+    padding: 20px 10px;
+    margin: 0 !important;
+}
+
+nav img{
+     max-height: 50px;
+}
+
+.container{
+    padding: 10px 0 40px !important;
+}
+.thumbnail{
+    border: 1px solid $szurkesKek !important;
+}
+
+.thumbnail:hover{
+        box-shadow: 0px 0px 10px $szurkesKek;
+}
+
+footer{
+    background-color: $szurkesKek;
+    color: $feher;
+    padding: 1% 0px;
+    margin: 0 !important;
+    position: fixed;
+    left: 0px;
+    bottom: 0px;
+    height: 50px;
+    width: 100%;
+}
+.flex{
+  display: flex;
+  justify-content: center;
+}
+.elem{
+  order: 1;
+}
+
+.flex2{
+      display: flex;
+      align-items: center;
+}
+.elem2{
+    order: 0;
 }
